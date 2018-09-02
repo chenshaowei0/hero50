@@ -24,7 +24,7 @@
                   <a href="javascript:window.confirm('Are you sure?')">删除</a>
                 </td>
               </tr>
-              <tr>
+              <tr v-if="list.length == 0">
                 <td colspan="4">暂无数据</td>
               </tr>
             </tbody>
@@ -38,7 +38,7 @@
   export default {
     data(){
       return {
-
+        list:[]
       }
     },
     mounted() {
@@ -46,8 +46,9 @@
     },
     methods:{
       loadData(){
-        axios.get('heroes')
+        axios.get('http://127.0.0.1:3002/heroes')
           .then((response)=>{
+            this.list = response.data;
             console.log(response);
           })
           .catch((err)=>{
