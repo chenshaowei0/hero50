@@ -19,9 +19,10 @@
                 <td>{{item.name}}</td>
                 <td>{{item.gender}}</td>
                 <td>
-                  <a href="edit.html">编辑</a>
+                  <!-- <a href="edit.html" >编辑</a> -->
+                  <router-link :to="'/heroes/edit/' + item.id">编辑</router-link>
                   &nbsp;&nbsp;
-                  <a href="javascript:window.confirm('Are you sure?')">删除</a>
+                  <a href="javascript:;" @click="handleDel(item.id)" >删除</a>
                 </td>
               </tr>
               <tr v-if="list.length == 0">
@@ -35,6 +36,7 @@
 
 <script>
   import axios from 'axios';
+  // console.dir(axios);
   export default {
     data(){
       return {
@@ -53,6 +55,20 @@
           })
           .catch((err)=>{
             console.log(err)
+          })
+      },
+      handleDel(id){
+        axios.delete(`http://127.0.0.1:3002/heroes/${id}`)
+          .then((response)=>{
+            console.log(response);
+            if(response.status == 200) {
+              this.loadData();
+            } else {
+              alert('删除错误');
+            }
+          })
+          .catch((err)=>{
+            console.log(err);
           })
       }
     }
